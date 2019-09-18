@@ -1,0 +1,492 @@
+
+ServoTest2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000288  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000004  00800060  00000288  000002fc  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000300  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000330  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000038  00000000  00000000  0000036c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000008cb  00000000  00000000  000003a4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000621  00000000  00000000  00000c6f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000039a  00000000  00000000  00001290  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000054  00000000  00000000  0000162c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003be  00000000  00000000  00001680  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000192  00000000  00000000  00001a3e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  00001bd0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e8 e8       	ldi	r30, 0x88	; 136
+  68:	f2 e0       	ldi	r31, 0x02	; 2
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a4 36       	cpi	r26, 0x64	; 100
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 04 01 	call	0x208	; 0x208 <main>
+  7a:	0c 94 42 01 	jmp	0x284	; 0x284 <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <_Z10gateRotatei>:
+#define railMotor 2
+
+int gateCur = -1, railCur = -1;
+void gateRotate(int target) {
+	//d5
+	if (gateCur == -1) {
+  82:	20 91 62 00 	lds	r18, 0x0062	; 0x800062 <gateCur>
+  86:	30 91 63 00 	lds	r19, 0x0063	; 0x800063 <gateCur+0x1>
+  8a:	2f 3f       	cpi	r18, 0xFF	; 255
+  8c:	4f ef       	ldi	r20, 0xFF	; 255
+  8e:	34 07       	cpc	r19, r20
+  90:	21 f0       	breq	.+8      	; 0x9a <_Z10gateRotatei+0x18>
+		gateCur = target;
+		OCR1A = gateCur;
+		return;
+	}
+	while (target > gateCur) {
+  92:	28 17       	cp	r18, r24
+  94:	39 07       	cpc	r19, r25
+  96:	84 f0       	brlt	.+32     	; 0xb8 <_Z10gateRotatei+0x36>
+  98:	07 c0       	rjmp	.+14     	; 0xa8 <_Z10gateRotatei+0x26>
+
+int gateCur = -1, railCur = -1;
+void gateRotate(int target) {
+	//d5
+	if (gateCur == -1) {
+		gateCur = target;
+  9a:	90 93 63 00 	sts	0x0063, r25	; 0x800063 <gateCur+0x1>
+  9e:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <gateCur>
+		OCR1A = gateCur;
+  a2:	9b bd       	out	0x2b, r25	; 43
+  a4:	8a bd       	out	0x2a, r24	; 42
+		return;
+  a6:	08 95       	ret
+	while (target > gateCur) {
+		gateCur += 10;
+		OCR1A = gateCur;
+		_delay_ms(1);
+	}
+	while (target < gateCur) {
+  a8:	20 91 62 00 	lds	r18, 0x0062	; 0x800062 <gateCur>
+  ac:	30 91 63 00 	lds	r19, 0x0063	; 0x800063 <gateCur+0x1>
+  b0:	82 17       	cp	r24, r18
+  b2:	93 07       	cpc	r25, r19
+  b4:	bc f0       	brlt	.+46     	; 0xe4 <_Z10gateRotatei+0x62>
+  b6:	08 95       	ret
+		gateCur = target;
+		OCR1A = gateCur;
+		return;
+	}
+	while (target > gateCur) {
+		gateCur += 10;
+  b8:	26 5f       	subi	r18, 0xF6	; 246
+  ba:	3f 4f       	sbci	r19, 0xFF	; 255
+  bc:	30 93 63 00 	sts	0x0063, r19	; 0x800063 <gateCur+0x1>
+  c0:	20 93 62 00 	sts	0x0062, r18	; 0x800062 <gateCur>
+		OCR1A = gateCur;
+  c4:	3b bd       	out	0x2b, r19	; 43
+  c6:	2a bd       	out	0x2a, r18	; 42
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  c8:	ef e9       	ldi	r30, 0x9F	; 159
+  ca:	ff e0       	ldi	r31, 0x0F	; 15
+  cc:	31 97       	sbiw	r30, 0x01	; 1
+  ce:	f1 f7       	brne	.-4      	; 0xcc <_Z10gateRotatei+0x4a>
+  d0:	00 c0       	rjmp	.+0      	; 0xd2 <_Z10gateRotatei+0x50>
+  d2:	00 00       	nop
+	if (gateCur == -1) {
+		gateCur = target;
+		OCR1A = gateCur;
+		return;
+	}
+	while (target > gateCur) {
+  d4:	20 91 62 00 	lds	r18, 0x0062	; 0x800062 <gateCur>
+  d8:	30 91 63 00 	lds	r19, 0x0063	; 0x800063 <gateCur+0x1>
+  dc:	28 17       	cp	r18, r24
+  de:	39 07       	cpc	r19, r25
+  e0:	5c f3       	brlt	.-42     	; 0xb8 <_Z10gateRotatei+0x36>
+  e2:	e2 cf       	rjmp	.-60     	; 0xa8 <_Z10gateRotatei+0x26>
+		gateCur += 10;
+		OCR1A = gateCur;
+		_delay_ms(1);
+	}
+	while (target < gateCur) {
+		gateCur -= 10;
+  e4:	2a 50       	subi	r18, 0x0A	; 10
+  e6:	31 09       	sbc	r19, r1
+  e8:	30 93 63 00 	sts	0x0063, r19	; 0x800063 <gateCur+0x1>
+  ec:	20 93 62 00 	sts	0x0062, r18	; 0x800062 <gateCur>
+		OCR1A = gateCur;
+  f0:	3b bd       	out	0x2b, r19	; 43
+  f2:	2a bd       	out	0x2a, r18	; 42
+  f4:	ef e9       	ldi	r30, 0x9F	; 159
+  f6:	ff e0       	ldi	r31, 0x0F	; 15
+  f8:	31 97       	sbiw	r30, 0x01	; 1
+  fa:	f1 f7       	brne	.-4      	; 0xf8 <_Z10gateRotatei+0x76>
+  fc:	00 c0       	rjmp	.+0      	; 0xfe <_Z10gateRotatei+0x7c>
+  fe:	00 00       	nop
+	while (target > gateCur) {
+		gateCur += 10;
+		OCR1A = gateCur;
+		_delay_ms(1);
+	}
+	while (target < gateCur) {
+ 100:	20 91 62 00 	lds	r18, 0x0062	; 0x800062 <gateCur>
+ 104:	30 91 63 00 	lds	r19, 0x0063	; 0x800063 <gateCur+0x1>
+ 108:	82 17       	cp	r24, r18
+ 10a:	93 07       	cpc	r25, r19
+ 10c:	5c f3       	brlt	.-42     	; 0xe4 <_Z10gateRotatei+0x62>
+ 10e:	08 95       	ret
+
+00000110 <_Z10railRotatei>:
+		_delay_ms(1);
+	}
+}
+void railRotate(int target) {
+	//d4
+	if (railCur == -1) {
+ 110:	20 91 60 00 	lds	r18, 0x0060	; 0x800060 <__data_start>
+ 114:	30 91 61 00 	lds	r19, 0x0061	; 0x800061 <__data_start+0x1>
+ 118:	2f 3f       	cpi	r18, 0xFF	; 255
+ 11a:	4f ef       	ldi	r20, 0xFF	; 255
+ 11c:	34 07       	cpc	r19, r20
+ 11e:	21 f0       	breq	.+8      	; 0x128 <_Z10railRotatei+0x18>
+		railCur = target;
+		OCR1B = railCur;
+		return;
+	}
+	while (target > railCur) {
+ 120:	28 17       	cp	r18, r24
+ 122:	39 07       	cpc	r19, r25
+ 124:	84 f0       	brlt	.+32     	; 0x146 <_Z10railRotatei+0x36>
+ 126:	07 c0       	rjmp	.+14     	; 0x136 <_Z10railRotatei+0x26>
+	}
+}
+void railRotate(int target) {
+	//d4
+	if (railCur == -1) {
+		railCur = target;
+ 128:	90 93 61 00 	sts	0x0061, r25	; 0x800061 <__data_start+0x1>
+ 12c:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__data_start>
+		OCR1B = railCur;
+ 130:	99 bd       	out	0x29, r25	; 41
+ 132:	88 bd       	out	0x28, r24	; 40
+		return;
+ 134:	08 95       	ret
+	while (target > railCur) {
+		railCur += 10;
+		OCR1B = railCur;
+		_delay_ms(1);
+	}
+	while (target < railCur) {
+ 136:	20 91 60 00 	lds	r18, 0x0060	; 0x800060 <__data_start>
+ 13a:	30 91 61 00 	lds	r19, 0x0061	; 0x800061 <__data_start+0x1>
+ 13e:	82 17       	cp	r24, r18
+ 140:	93 07       	cpc	r25, r19
+ 142:	bc f0       	brlt	.+46     	; 0x172 <_Z10railRotatei+0x62>
+ 144:	08 95       	ret
+		railCur = target;
+		OCR1B = railCur;
+		return;
+	}
+	while (target > railCur) {
+		railCur += 10;
+ 146:	26 5f       	subi	r18, 0xF6	; 246
+ 148:	3f 4f       	sbci	r19, 0xFF	; 255
+ 14a:	30 93 61 00 	sts	0x0061, r19	; 0x800061 <__data_start+0x1>
+ 14e:	20 93 60 00 	sts	0x0060, r18	; 0x800060 <__data_start>
+		OCR1B = railCur;
+ 152:	39 bd       	out	0x29, r19	; 41
+ 154:	28 bd       	out	0x28, r18	; 40
+ 156:	ef e9       	ldi	r30, 0x9F	; 159
+ 158:	ff e0       	ldi	r31, 0x0F	; 15
+ 15a:	31 97       	sbiw	r30, 0x01	; 1
+ 15c:	f1 f7       	brne	.-4      	; 0x15a <_Z10railRotatei+0x4a>
+ 15e:	00 c0       	rjmp	.+0      	; 0x160 <_Z10railRotatei+0x50>
+ 160:	00 00       	nop
+	if (railCur == -1) {
+		railCur = target;
+		OCR1B = railCur;
+		return;
+	}
+	while (target > railCur) {
+ 162:	20 91 60 00 	lds	r18, 0x0060	; 0x800060 <__data_start>
+ 166:	30 91 61 00 	lds	r19, 0x0061	; 0x800061 <__data_start+0x1>
+ 16a:	28 17       	cp	r18, r24
+ 16c:	39 07       	cpc	r19, r25
+ 16e:	5c f3       	brlt	.-42     	; 0x146 <_Z10railRotatei+0x36>
+ 170:	e2 cf       	rjmp	.-60     	; 0x136 <_Z10railRotatei+0x26>
+		railCur += 10;
+		OCR1B = railCur;
+		_delay_ms(1);
+	}
+	while (target < railCur) {
+		railCur -= 10;
+ 172:	2a 50       	subi	r18, 0x0A	; 10
+ 174:	31 09       	sbc	r19, r1
+ 176:	30 93 61 00 	sts	0x0061, r19	; 0x800061 <__data_start+0x1>
+ 17a:	20 93 60 00 	sts	0x0060, r18	; 0x800060 <__data_start>
+		OCR1B = railCur;
+ 17e:	39 bd       	out	0x29, r19	; 41
+ 180:	28 bd       	out	0x28, r18	; 40
+ 182:	ef e9       	ldi	r30, 0x9F	; 159
+ 184:	ff e0       	ldi	r31, 0x0F	; 15
+ 186:	31 97       	sbiw	r30, 0x01	; 1
+ 188:	f1 f7       	brne	.-4      	; 0x186 <_Z10railRotatei+0x76>
+ 18a:	00 c0       	rjmp	.+0      	; 0x18c <_Z10railRotatei+0x7c>
+ 18c:	00 00       	nop
+	while (target > railCur) {
+		railCur += 10;
+		OCR1B = railCur;
+		_delay_ms(1);
+	}
+	while (target < railCur) {
+ 18e:	20 91 60 00 	lds	r18, 0x0060	; 0x800060 <__data_start>
+ 192:	30 91 61 00 	lds	r19, 0x0061	; 0x800061 <__data_start+0x1>
+ 196:	82 17       	cp	r24, r18
+ 198:	93 07       	cpc	r25, r19
+ 19a:	5c f3       	brlt	.-42     	; 0x172 <_Z10railRotatei+0x62>
+ 19c:	08 95       	ret
+
+0000019e <_Z6rotateii>:
+
+void rotate(int motor, int angle)
+{
+	int val = 1450; //+ angle * 800 / 90;
+	
+	if(angle == -90)
+ 19e:	66 3a       	cpi	r22, 0xA6	; 166
+ 1a0:	2f ef       	ldi	r18, 0xFF	; 255
+ 1a2:	72 07       	cpc	r23, r18
+ 1a4:	69 f0       	breq	.+26     	; 0x1c0 <_Z6rotateii+0x22>
+	{
+		val = 520;
+	}
+	else if(angle == -30)
+ 1a6:	62 3e       	cpi	r22, 0xE2	; 226
+ 1a8:	2f ef       	ldi	r18, 0xFF	; 255
+ 1aa:	72 07       	cpc	r23, r18
+ 1ac:	61 f0       	breq	.+24     	; 0x1c6 <_Z6rotateii+0x28>
+	{
+		val = 1000;
+	}
+	else if(angle == 30)
+ 1ae:	6e 31       	cpi	r22, 0x1E	; 30
+ 1b0:	71 05       	cpc	r23, r1
+ 1b2:	61 f0       	breq	.+24     	; 0x1cc <_Z6rotateii+0x2e>
+	{
+		val = 1860;
+	}
+	else if(angle == 90)
+ 1b4:	6a 35       	cpi	r22, 0x5A	; 90
+ 1b6:	71 05       	cpc	r23, r1
+ 1b8:	61 f4       	brne	.+24     	; 0x1d2 <_Z6rotateii+0x34>
+	{
+		val = 2360;
+ 1ba:	28 e3       	ldi	r18, 0x38	; 56
+ 1bc:	39 e0       	ldi	r19, 0x09	; 9
+ 1be:	0b c0       	rjmp	.+22     	; 0x1d6 <_Z6rotateii+0x38>
+{
+	int val = 1450; //+ angle * 800 / 90;
+	
+	if(angle == -90)
+	{
+		val = 520;
+ 1c0:	28 e0       	ldi	r18, 0x08	; 8
+ 1c2:	32 e0       	ldi	r19, 0x02	; 2
+ 1c4:	08 c0       	rjmp	.+16     	; 0x1d6 <_Z6rotateii+0x38>
+	}
+	else if(angle == -30)
+	{
+		val = 1000;
+ 1c6:	28 ee       	ldi	r18, 0xE8	; 232
+ 1c8:	33 e0       	ldi	r19, 0x03	; 3
+ 1ca:	05 c0       	rjmp	.+10     	; 0x1d6 <_Z6rotateii+0x38>
+	}
+	else if(angle == 30)
+	{
+		val = 1860;
+ 1cc:	24 e4       	ldi	r18, 0x44	; 68
+ 1ce:	37 e0       	ldi	r19, 0x07	; 7
+ 1d0:	02 c0       	rjmp	.+4      	; 0x1d6 <_Z6rotateii+0x38>
+	}
+}
+
+void rotate(int motor, int angle)
+{
+	int val = 1450; //+ angle * 800 / 90;
+ 1d2:	2a ea       	ldi	r18, 0xAA	; 170
+ 1d4:	35 e0       	ldi	r19, 0x05	; 5
+	else if(angle == 90)
+	{
+		val = 2360;
+	}
+	
+	if (motor == gateMotor) {
+ 1d6:	01 97       	sbiw	r24, 0x01	; 1
+ 1d8:	39 f4       	brne	.+14     	; 0x1e8 <_Z6rotateii+0x4a>
+		gateRotate(ICR1 - val);
+ 1da:	86 b5       	in	r24, 0x26	; 38
+ 1dc:	97 b5       	in	r25, 0x27	; 39
+ 1de:	82 1b       	sub	r24, r18
+ 1e0:	93 0b       	sbc	r25, r19
+ 1e2:	0e 94 41 00 	call	0x82	; 0x82 <_Z10gateRotatei>
+ 1e6:	06 c0       	rjmp	.+12     	; 0x1f4 <_Z6rotateii+0x56>
+	} else {
+		railRotate(ICR1 - val);
+ 1e8:	86 b5       	in	r24, 0x26	; 38
+ 1ea:	97 b5       	in	r25, 0x27	; 39
+ 1ec:	82 1b       	sub	r24, r18
+ 1ee:	93 0b       	sbc	r25, r19
+ 1f0:	0e 94 88 00 	call	0x110	; 0x110 <_Z10railRotatei>
+ 1f4:	8f ef       	ldi	r24, 0xFF	; 255
+ 1f6:	90 e7       	ldi	r25, 0x70	; 112
+ 1f8:	22 e0       	ldi	r18, 0x02	; 2
+ 1fa:	81 50       	subi	r24, 0x01	; 1
+ 1fc:	90 40       	sbci	r25, 0x00	; 0
+ 1fe:	20 40       	sbci	r18, 0x00	; 0
+ 200:	e1 f7       	brne	.-8      	; 0x1fa <_Z6rotateii+0x5c>
+ 202:	00 c0       	rjmp	.+0      	; 0x204 <_Z6rotateii+0x66>
+ 204:	00 00       	nop
+ 206:	08 95       	ret
+
+00000208 <main>:
+	_delay_ms(50);	
+}
+
+int main(void)
+{
+	DDRD |= 0xFF;
+ 208:	81 b3       	in	r24, 0x11	; 17
+ 20a:	8f ef       	ldi	r24, 0xFF	; 255
+ 20c:	81 bb       	out	0x11, r24	; 17
+	TCCR1A |= 1<<WGM11 | 1<<COM1A1 | 1<<COM1A0 | 1<<COM1B0 | 1<<COM1B1;  //com1a for d5, com1b for d4, d5 = ocr1a, d4 = ocr1b
+ 20e:	8f b5       	in	r24, 0x2f	; 47
+ 210:	82 6f       	ori	r24, 0xF2	; 242
+ 212:	8f bd       	out	0x2f, r24	; 47
+	TCCR1B |= 1<<WGM13 | 1<<WGM12 | 1<<CS10;
+ 214:	8e b5       	in	r24, 0x2e	; 46
+ 216:	89 61       	ori	r24, 0x19	; 25
+ 218:	8e bd       	out	0x2e, r24	; 46
+	ICR1 = 19999;
+ 21a:	8f e1       	ldi	r24, 0x1F	; 31
+ 21c:	9e e4       	ldi	r25, 0x4E	; 78
+ 21e:	97 bd       	out	0x27, r25	; 39
+ 220:	86 bd       	out	0x26, r24	; 38
+
+	while (1)
+	{	
+		rotate(gateMotor, 30);
+ 222:	6e e1       	ldi	r22, 0x1E	; 30
+ 224:	70 e0       	ldi	r23, 0x00	; 0
+ 226:	81 e0       	ldi	r24, 0x01	; 1
+ 228:	90 e0       	ldi	r25, 0x00	; 0
+ 22a:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		rotate(gateMotor, 0);
+ 22e:	60 e0       	ldi	r22, 0x00	; 0
+ 230:	70 e0       	ldi	r23, 0x00	; 0
+ 232:	81 e0       	ldi	r24, 0x01	; 1
+ 234:	90 e0       	ldi	r25, 0x00	; 0
+ 236:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		rotate(railMotor, -30);
+ 23a:	62 ee       	ldi	r22, 0xE2	; 226
+ 23c:	7f ef       	ldi	r23, 0xFF	; 255
+ 23e:	82 e0       	ldi	r24, 0x02	; 2
+ 240:	90 e0       	ldi	r25, 0x00	; 0
+ 242:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		
+		rotate(gateMotor, -30);
+ 246:	62 ee       	ldi	r22, 0xE2	; 226
+ 248:	7f ef       	ldi	r23, 0xFF	; 255
+ 24a:	81 e0       	ldi	r24, 0x01	; 1
+ 24c:	90 e0       	ldi	r25, 0x00	; 0
+ 24e:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		rotate(gateMotor, 30);
+ 252:	6e e1       	ldi	r22, 0x1E	; 30
+ 254:	70 e0       	ldi	r23, 0x00	; 0
+ 256:	81 e0       	ldi	r24, 0x01	; 1
+ 258:	90 e0       	ldi	r25, 0x00	; 0
+ 25a:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		rotate(gateMotor, 0);
+ 25e:	60 e0       	ldi	r22, 0x00	; 0
+ 260:	70 e0       	ldi	r23, 0x00	; 0
+ 262:	81 e0       	ldi	r24, 0x01	; 1
+ 264:	90 e0       	ldi	r25, 0x00	; 0
+ 266:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		rotate(railMotor, 30);
+ 26a:	6e e1       	ldi	r22, 0x1E	; 30
+ 26c:	70 e0       	ldi	r23, 0x00	; 0
+ 26e:	82 e0       	ldi	r24, 0x02	; 2
+ 270:	90 e0       	ldi	r25, 0x00	; 0
+ 272:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+		
+		rotate(gateMotor, -30);
+ 276:	62 ee       	ldi	r22, 0xE2	; 226
+ 278:	7f ef       	ldi	r23, 0xFF	; 255
+ 27a:	81 e0       	ldi	r24, 0x01	; 1
+ 27c:	90 e0       	ldi	r25, 0x00	; 0
+ 27e:	0e 94 cf 00 	call	0x19e	; 0x19e <_Z6rotateii>
+ 282:	cf cf       	rjmp	.-98     	; 0x222 <main+0x1a>
+
+00000284 <_exit>:
+ 284:	f8 94       	cli
+
+00000286 <__stop_program>:
+ 286:	ff cf       	rjmp	.-2      	; 0x286 <__stop_program>
