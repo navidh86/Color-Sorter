@@ -2,7 +2,7 @@
  * ColorSensor.cpp
  *
  * Created: 21-Aug-19 8:41:39 PM
- * Author : navid
+ * Author : solaiman, navid, avijit
  */
 
 // PORT A (pin 2-7) LCD purpose
